@@ -20,6 +20,11 @@ class PMO(discord.Client):
             await message.channel.send(
                     "That's a bad word. Please dont say more bad words"
                     )
+    async def on_member_join(self, member):
+        welcome_channel = next(( 
+            chan for chan in member.guild.channels if chan.name == "welcome"))
+        if not welcome_channel is None:
+            await welcome_channel.send(f'Welcome to the server {member.display_name}')
 
 
 def main():
@@ -27,7 +32,7 @@ def main():
     
     print(bad_words)
 
-    intents = discord.Intents.default()
+    intents = discord.Intents(messages=True, guilds=True, members=True)
 
     client = PMO(intents=intents)
     client.run(os.getenv('BOT_TOKEN'))
